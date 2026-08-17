@@ -1,3 +1,4 @@
+import { response } from "express";
 import Product from "../models/productsModel.js";
 export const createProduct = async (req, res) => {
   try {
@@ -70,7 +71,52 @@ export const getProductById = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "product found",
-      product
+      product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "server error",
+    });
+  }
+};
+export const updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!product) {
+      return response.status(401).json({
+        success: true,
+        message: "product not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "product updated",
+      product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "server error",
+    });
+  }
+};
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id)
+    if (!product) {
+      return response.status(401).json({
+        success: true,
+        message: "product not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "product deleted",
+      product,
     });
   } catch (error) {
     return res.status(500).json({
