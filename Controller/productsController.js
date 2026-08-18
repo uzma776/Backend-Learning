@@ -7,7 +7,7 @@ export const createProduct = async (req, res) => {
     if (!title || !description || !price || !category || !image) {
       return res.status(401).json({
         success: false,
-        message: "every fiels is required something you are missing to enter",
+        message: "every field is required. something you are missing to enter",
       });
     }
 
